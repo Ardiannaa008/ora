@@ -1,6 +1,6 @@
 # Ora — Business (Parts 1–4)
 
-> **How I made this:** I drafted these documents with Claude as a thinking partner. I checked the domain and the Instagram and TikTok handles myself, and I contacted the salon owners myself (13 studios on WhatsApp, 1 reply so far).
+> **How I made this:** I drafted these documents with Claude as a thinking partner. I checked the domain and the Instagram and TikTok handles myself, and I contacted the salon owners myself (13 studios on WhatsApp, 2 replies so far).
 
 > **Working name:** Ora (Albanian for "the hour"). See `brand-book.md` for the name checks.
 > **One-sentence pitch:** Ora gives every beauty salon its own branded online booking page, so clients book in 30 seconds and get a WhatsApp reminder, without the owner answering DMs all day.
@@ -14,7 +14,7 @@ Interviews are in progress: outreach to 13 salons was sent on 15 Nov 2026, and r
 **One sentence:**
 Owners of small beauty salons (hair, nails, lashes, barbers) in Kosovo and North Macedonia take every booking by phone, Instagram DM or Viber/WhatsApp, often while working on a client. That costs them **1–2 hours a day** answering messages, plus **lost money from no-shows and double bookings** that nobody reminded or tracked.
 
-> **Interview 1 confirmed** that bookings are kept in a paper notebook across WhatsApp, Instagram and phone, and that no-shows without notice happen often. The exact hours per day is still a **hypothesis** to measure in more interviews.
+> **Interviews 1 and 2 confirmed** that bookings are spread across WhatsApp, Instagram and phone (one salon also uses a paper notebook), and that no-shows and last-minute cancellations are the biggest pain for both. The exact hours per day is still a **hypothesis** to measure in more interviews.
 
 ### Interviews (minimum 2, aim for 5)
 
@@ -31,14 +31,14 @@ Ask these questions and write the answers **in their exact words** (in Albanian 
 
 | Date | What I did | Result |
 |---|---|---|
-| 15 Nov 2026 | Sent a WhatsApp message with the 3 questions to **13 beauty studios** (hair, nails, beauty) | **1 reply so far** (15 Nov, 21:27). Other replies will be added below as they arrive |
+| 15 Nov 2026 | Sent a WhatsApp message with the 3 questions to **13 beauty studios** (hair, nails, beauty) | **2 replies so far** (15 Nov, 21:27 and 22:58). Other replies will be added below as they arrive |
 
 ### Salon owners (the people who pay)
 
 | # | Who (role, business type, city) | Date | What they said, in their words | What I learned |
 |---|---|---|---|---|
 | 1 | Owner, beauty studio (WhatsApp) | 15 Nov 2026 | **Q1:** "Terminet i shkruajmë në fletore duke kontaktuar WhatsApp, Instagram, numër tel." *(We write appointments in a notebook; clients contact us via WhatsApp, Instagram and phone.)*<br>**Q2:** "Po, ka shumë raste kur nuk vijnë dhe nuk lajmërohen, dhe pjesa më e bezdisshme është kur kohë pas kohe lajmërohen dhe me 100 pyetje." *(Yes, there are many cases when clients don't come and don't let us know, and the most annoying part is when people keep getting in touch with 100 questions.)*<br>**Q3:** "Jo, nuk kemi provuar, dhe s'do provoja. Punën e termineve nuk ia besoj kujt." *(No, we haven't tried, and I wouldn't. I don't trust anyone else with the appointments.)* | ✅ Bookings run on a **paper notebook + 3 channels** (WhatsApp, Instagram, phone).<br>✅ **No-shows without notice happen often**, which confirms the core problem.<br>➕ New pain: **repeated questions** (prices, free times). A booking page that shows services, prices and free slots answers these automatically.<br>⚠️ **Biggest objection: trust.** She doesn't want to hand appointments to someone else. Ora must keep the **owner in full control**: she can see, edit and block every booking, and nothing happens without her rules. Selling with a free trial and in-person setup matters more than features.<br>❓ Didn't answer the price question, so the price is still a hypothesis. |
-| 2 | Pending: reply from outreach | | | |
+| 2 | Owner, beauty studio (WhatsApp) | 15 Nov 2026 | **Q1:** "Terminet i menaxhojmë kryesisht përmes Instagramit, WhatsApp-it dhe telefonit." *(We manage appointments mainly through Instagram, WhatsApp and the phone.)*<br>**Q2:** "Pjesa më e vështirë është organizimi i termineve dhe anulimet në momentin e fundit, kur klientët nuk paraqiten." *(The hardest part is organising the appointments, and last-minute cancellations when clients don't show up.)*<br>**Q3:** "Ende nuk kemi përdorur një aplikacion të dedikuar për termine, por do të ishte shumë e dobishme të kishim një sistem që na ndihmon në organizimin dhe menaxhimin e tyre." *(We haven't used a dedicated booking app yet, but it would be very useful to have a system that helps us organise and manage them.)* | ✅ Same **3 channels** as interview 1 (Instagram, WhatsApp, phone), so this pattern repeats.<br>✅ **Last-minute cancellations and no-shows** are the hardest part, the same pain as interview 1.<br>✅ **Open to a system:** "it would be very useful". This is the kind of salon to approach first as a pilot.<br>📊 **2 of 2 owners** named no-shows; 1 is open to a tool, 1 doesn't trust outsiders. Ora needs to win trust by keeping the owner in control.<br>❓ Didn't answer the price question either, so the price is still a hypothesis. |
 
 ### Clients (the people who book)
 
