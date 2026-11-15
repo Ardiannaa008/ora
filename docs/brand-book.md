@@ -13,8 +13,8 @@ Short names are often taken, so check these and write the result here:
 | What | Where to check | Options to try, in order | Result |
 |---|---|---|---|
 | Domain | namecheap.com, marnet.mk (for .mk) | `ora.mk`, `getora.app`, `orabooking.com`, `ora-salon.com`, `ora-booking.com` | Others taken. **ora-booking.com available ✅** ($12.08/yr on Namecheap), chosen |
-| Instagram | instagram.com/<handle> | `@ora.booking`, `@ora.salons`, `@getora.app` | **@ora.booking available ✅** (checked 15 Nov 2026: "Profile isn't available") |
-| TikTok | tiktok.com/@<handle> | same as Instagram | **@ora.booking available ✅** (checked 15 Nov 2026: "Couldn't find this account") |
+| Instagram | instagram.com/<handle> | `@ora.booking`, `@booking.ora`, `@ora.salons` | **@booking.ora available ✅** (checked 15 Nov 2026), chosen |
+| TikTok | tiktok.com/@<handle> | `@booking.ora`, `@orabooking`, `@ora_booking`, `@ora.booking.app` | No matching handle found yet. Will be chosen before the first TikTok video |
 | Business email | after the domain | `hello@ora-booking.com` | Will be created after buying the domain |
 
 **Backup names** if Ora is not available: **Radha** (Albanian "your turn", as in *e ke radhën*) or **Terminka** (from *termin*, used in both Albanian and Macedonian).
