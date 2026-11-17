@@ -1,0 +1,211 @@
+// Ora data model. Source of the rules: docs/rules-and-flows.md
+// Diagram and explanation: docs/data-model.md
+//
+// SQLite has no enum type, so "kind" fields (role, status, source, plan) are
+// Strings. The allowed values are listed in comments and will be checked in code.
+// Money is stored in cents (Int) to avoid rounding errors: €15.00 = 1500.
+// Times of day are "HH:MM" strings (e.g. "09:00"); exact moments are DateTime (UTC).
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+}
+
+// One salon = one location (v1). Branding and booking rules are settings,
+// never custom code (business.md: "one product, branded per salon").
+model Salon {
+  id      String  @id @default(cuid())
+  name    String
+  slug    String  @unique // the link: ora-booking.com/<slug>
+  address String?
+  city    String?
+  phone   String // shown when online changes are blocked ("Call the salon")
+  email   String?
+
+  // Branding (Flow 1, step 6)
+  logoUrl       String?
+  coverPhotoUrl String?
+  primaryColor  String? // hex, e.g. "#3D1E4F"
+  accentColor   String?
+
+  // Booking rules, with the defaults from rules-and-flows.md
+  cancelWindowHours    Int @default(24) // rule 1, allowed 2–48
+  bufferMinutes        Int @default(10) // rule 4, allowed 0–30
+  maxDaysAhead         Int @default(60) // rule 3
+  minHoursAhead        Int @default(1) // rule 3
+  maxUpcomingPerClient Int @default(3) // rule 6
+  noShowLimit          Int @default(2) // rule 5
+
+  // Subscription (rule 11, Flow 1 step 9)
+  plan               String    @default("start") // start | salon
+  subscriptionStatus String    @default("trial") // trial | active | paused | suspended
+  trialEndsAt        DateTime?
+  paidUntil          DateTime?
+  deletedAt          DateTime? // rule 12: set when the salon leaves; data removed within 30 days
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  users        User[]
+  services     Service[]
+  openingHours OpeningHours[]
+  clients      Client[]
+  bookings     Booking[]
+}
+
+// Owners, staff and the platform admin. Clients are NOT users (they have no account).
+model User {
+  id        String   @id @default(cuid())
+  salonId   String? // null only for role "admin" (platform admin)
+  name      String
+  email     String   @unique
+  phone     String?
+  role      String // owner | staff | admin
+  active    Boolean  @default(true)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  salon           Salon?         @relation(fields: [salonId], references: [id])
+  services        StaffService[]
+  workingHours    WorkingHours[]
+  timeBlocks      TimeBlock[]
+  bookings        Booking[]      @relation("StaffBookings")
+  createdBookings Booking[]      @relation("CreatedByUser")
+
+  @@index([salonId])
+}
+
+model Service {
+  id              String   @id @default(cuid())
+  salonId         String
+  name            String // e.g. "Gel nails"
+  description     String?
+  priceCents      Int // rule 10: the price the client pays in the salon
+  durationMinutes Int // e.g. 60
+  active          Boolean  @default(true) // hide instead of delete, so old bookings keep their service
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
+
+  salon    Salon          @relation(fields: [salonId], references: [id])
+  staff    StaffService[]
+  bookings Booking[]
+
+  @@index([salonId])
+}
+
+// Which staff member does which service (Flow 1, step 5).
+model StaffService {
+  userId    String
+  serviceId String
+
+  user    User    @relation(fields: [userId], references: [id], onDelete: Cascade)
+  service Service @relation(fields: [serviceId], references: [id], onDelete: Cascade)
+
+  @@id([userId, serviceId])
+}
+
+// When the salon is open. One row per weekday (0 = Sunday … 6 = Saturday). No row = closed.
+model OpeningHours {
+  id       String @id @default(cuid())
+  salonId  String
+  weekday  Int // 0–6
+  opensAt  String // "09:00"
+  closesAt String // "19:00"
+
+  salon Salon @relation(fields: [salonId], references: [id], onDelete: Cascade)
+
+  @@unique([salonId, weekday])
+}
+
+// When a staff member normally works. Several rows per weekday allowed (e.g. split shift).
+model WorkingHours {
+  id       String @id @default(cuid())
+  userId   String
+  weekday  Int // 0–6
+  startsAt String // "09:00"
+  endsAt   String // "17:00"
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId, weekday])
+}
+
+// A break, day off or holiday for one staff member. Free slots skip these.
+model TimeBlock {
+  id        String   @id @default(cuid())
+  userId    String
+  startsAt  DateTime
+  endsAt    DateTime
+  reason    String? // e.g. "Lunch", "Day off"
+  createdAt DateTime @default(now())
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId, startsAt])
+}
+
+// A person who books at one salon. Rule 8: one phone number = one client per salon.
+// The same person booking at two salons is two Client rows; each salon owns its list (rule 12).
+model Client {
+  id               String   @id @default(cuid())
+  salonId          String
+  name             String
+  phone            String // required (rule 8), stored in international format: +38970123456
+  email            String?
+  noShowCount      Int      @default(0) // rule 5
+  blockedOnline    Boolean  @default(false) // rule 5: true after noShowLimit; owner can reset
+  marketingConsent Boolean  @default(false) // rule 13: separate opt-in box
+  notes            String? // owner's private notes
+  createdAt        DateTime @default(now())
+  updatedAt        DateTime @updatedAt
+
+  salon    Salon     @relation(fields: [salonId], references: [id])
+  bookings Booking[]
+
+  @@unique([salonId, phone])
+}
+
+// One appointment: one client, one service, one staff member, one time.
+// Rule 2 (never double-booked) is enforced in code inside a transaction,
+// because SQLite cannot put a constraint on overlapping time ranges.
+model Booking {
+  id        String @id @default(cuid())
+  salonId   String
+  clientId  String
+  staffId   String
+  serviceId String
+
+  startsAt DateTime
+  endsAt   DateTime // startsAt + durationMinutes + salon buffer (rule 4)
+
+  status String @default("confirmed") // confirmed | cancelled | done | no_show
+  source String @default("online") // online | walk_in | phone
+
+  // Copied from the service when booked, so later price changes don't rewrite history
+  priceCents      Int
+  durationMinutes Int
+
+  manageToken     String    @unique // secret part of the cancel/reschedule link (Flow 3)
+  createdByUserId String? // staff/owner who added it; null when the client booked online
+  cancelledAt     DateTime?
+
+  // Rule 9: reminders 24h and 2h before; null = not sent yet
+  reminder24hSentAt DateTime?
+  reminder2hSentAt  DateTime?
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  salon     Salon   @relation(fields: [salonId], references: [id])
+  client    Client  @relation(fields: [clientId], references: [id])
+  staff     User    @relation("StaffBookings", fields: [staffId], references: [id])
+  service   Service @relation(fields: [serviceId], references: [id])
+  createdBy User?   @relation("CreatedByUser", fields: [createdByUserId], references: [id])
+
+  @@index([staffId, startsAt]) // fast "is this slot free?" checks
+  @@index([salonId, startsAt]) // the owner's calendar
+  @@index([clientId])
+}

@@ -1,0 +1,32 @@
+# Dependencies
+node_modules/
+
+# SQLite database: every developer creates their own with `npm run db:migrate`
+*.db
+*.db-journal
+*.db-wal
+*.db-shm
+
+# Secrets and local settings (.env.example IS committed)
+.env
+.env.*
+!.env.example
+
+# Build output
+dist/
+dist-ssr/
+
+# Logs
+*.log
+logs/
+
+# Tool output and personal Claude Code settings
+.playwright-mcp/
+.claude/settings.local.json
+
+# Editor / OS
+.vscode/*
+!.vscode/extensions.json
+.idea/
+.DS_Store
+Thumbs.db

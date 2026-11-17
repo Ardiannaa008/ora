@@ -1,0 +1,33 @@
+/* Ora brand tokens (docs/brand-book.md). Use these variables instead of raw hex values. */
+:root {
+  --plum: #3d1e4f;
+  --coral: #ff6b5b;
+  --cream: #fff7f0;
+
+  --font-heading: 'Fraunces', Georgia, serif;
+  --font-body: 'DM Sans', system-ui, -apple-system, 'Segoe UI', sans-serif;
+
+  color: var(--plum);
+  background-color: var(--cream);
+  font-family: var(--font-body);
+  font-weight: 400;
+  line-height: 1.5;
+  -webkit-font-smoothing: antialiased;
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  min-height: 100vh;
+  background-color: var(--cream);
+}
+
+img {
+  max-width: 100%;
+  height: auto;
+}

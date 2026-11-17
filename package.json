@@ -1,0 +1,26 @@
+{
+  "name": "ora",
+  "private": true,
+  "description": "Ora: branded online booking pages for beauty salons in Kosovo and North Macedonia.",
+  "workspaces": [
+    "frontend",
+    "backend"
+  ],
+  "scripts": {
+    "db:migrate": "npm run db:migrate --workspace backend",
+    "db:studio": "npm run db:studio --workspace backend",
+    "dev": "concurrently --names \"back,front\" --prefix-colors \"magenta,yellow\" \"npm run dev --workspace backend\" \"npm run dev --workspace frontend\"",
+    "build": "npm run build --workspace frontend"
+  },
+  "engines": {
+    "node": ">=20.19"
+  },
+  "devDependencies": {
+    "concurrently": "^10.0.7"
+  },
+  "allowScripts": {
+    "prisma@7.10.1": true,
+    "@prisma/engines@7.10.1": true,
+    "better-sqlite3@12.11.1": true
+  }
+}
